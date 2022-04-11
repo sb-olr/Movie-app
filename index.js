@@ -14,7 +14,7 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
   // setup the logger
 app.use(morgan('combined', {stream: accessLogStream}));
 
-let topBooks = [
+let topMovies = [
     {
       title: 'Harry Potter and the Sorcerer\'s Stone',
       author: 'J.K. Rowling'
@@ -31,18 +31,22 @@ let topBooks = [
   
   // GET requests
   app.get('/', (req, res) => {
-    res.send('Welcome to my book club!');
+    res.send('Welcome to the myFlix app!!!');
   });
   
   app.get('/documentation', (req, res) => {                  
     res.sendFile('public/documentation.html', { root: __dirname });
   });
   
-  app.get('/books', (req, res) => {
-    res.json(topBooks);
+  app.get('/movies', (req, res) => {
+    res.json(topMovies);
   });
   
-  
+  //error handling middleware function
+  app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('An Error was encountered!');
+  });
   // listen for requests
   app.listen(port, () => {
     console.log(`Your app is listening on port ${port}.`);
