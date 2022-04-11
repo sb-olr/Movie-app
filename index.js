@@ -1,10 +1,18 @@
 const express = require('express'),
-    morgan = require('morgan');
-
-const app = express();
-app.use(morgan('common'));
+    morgan = require('morgan'),
+    fs = require('fs'), // import built in node modules fs and path 
+    path = require('path');
 
 const port = 3000;
+
+const app = express();
+app.use(express.static('public')); //to specify static files folder
+  // create a write stream (in append mode)
+  // a ‘log.txt’ file is created in root directory
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
+  
+  // setup the logger
+app.use(morgan('combined', {stream: accessLogStream}));
 
 let topBooks = [
     {
