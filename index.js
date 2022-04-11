@@ -16,19 +16,57 @@ app.use(morgan('combined', {stream: accessLogStream}));
 
 let topMovies = [
     {
-      title: 'Harry Potter and the Sorcerer\'s Stone',
-      author: 'J.K. Rowling'
+        id: 0,
+        title: 'The Shawshank Redemption',
+        director: 'Frank Darabont'
     },
     {
-      title: 'Lord of the Rings',
-      author: 'J.R.R. Tolkien'
+        id: 1,
+        title: 'The Godfather',
+        director: 'Francis Ford Coppola'
     },
     {
-      title: 'Twilight',
-      author: 'Stephanie Meyer'
+        id: 2,
+        title: 'The Dark Knight',
+        director: 'Christopher Nolan'
+    },
+    {
+        id: 3,
+        title: 'The Lord of the Rings: The Return of the King',
+        director: 'Peter Jackson'
+    },
+    {
+        id: 4,
+        title: 'Schindler\'s List',
+        director: 'Steven Spielberg'
+    },
+    {
+        id: 5,
+        title: 'The Godfather: Part II',
+        director: 'Francis Ford Coppola'
+    },
+    {
+        id: 6,
+        title: '12 Angry Men',
+        director: 'Sidney Lumet'
+    },
+    {
+        id: 7,
+        title: 'The Lord of the Rings: The Fellowship of the Ring',
+        director: 'Peter Jackson'
+    },
+    {
+        id: 8,
+        title: 'Pulp Fiction',
+        director: 'Quentin Tarantino'
+    },
+    {
+        id: 9,
+        title: 'Inception',
+        director: 'Christopher Nolan'
     }
-  ];
-  
+    ];
+
   // GET requests
   app.get('/', (req, res) => {
     res.send('Welcome to the myFlix app!!!');
