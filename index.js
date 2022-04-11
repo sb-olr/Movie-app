@@ -3,7 +3,7 @@ const express = require('express'),
     fs = require('fs'), // import built in node modules fs and path 
     path = require('path');
 
-const port = 3000;
+const port = 8080;
 
 const app = express();
 app.use(express.static('public')); //to specify static files folder
