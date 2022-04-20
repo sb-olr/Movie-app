@@ -3,11 +3,13 @@ const express = require('express'),
   fs = require('fs'), // import built in node modules fs and path 
   path = require('path'),
   uuid = require('uuid'),
-  body-parser = require('body-parser');
+  bodyParser = require('body-parser');
 
 const port = 3000;
 
 const app = express();
+app.use(bodyParser.json());
+
 app.use(express.static('public')); //to specify static files folder
   // create a write stream (in append mode)
   // a ‘log.txt’ file is created in root directory
@@ -16,72 +18,96 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
   // setup the logger
 app.use(morgan('combined', {stream: accessLogStream}));
 
-let topMovies = [
+let movies = [
     {
         id: 0,
-        title: 'The Shawshank Redemption',
-        director: 'Frank Darabont'
+    title: 'The Shawshank Redemption',
+        genre: {name: 'drama'},
+    director: { 'name': 'Frank Darabont' }
     },
     {
         id: 1,
         title: 'The Godfather',
-        director: 'Francis Ford Coppola'
+        genre: {name: 'drama'},
+      director: { 'name': 'Francis Ford Coppola' }
     },
     {
         id: 2,
-        title: 'The Dark Knight',
-        director: 'Christopher Nolan'
+      title: 'The Dark Knight',
+        genre: {name: 'drama'},
+      director: { 'name': 'Christopher Nolan' }
     },
     {
-        id: 3,
-        title: 'The Lord of the Rings: The Return of the King',
-        director: 'Peter Jackson'
+      id: 3,
+      title: 'The Lord of the Rings: The Return of the King',
+      genre: {name: 'drama'},
+      director: { 'name': 'Peter Jackson' }
     },
     {
-        id: 4,
-        title: 'Schindler\'s List',
-        director: 'Steven Spielberg'
+      id: 4,
+      title: 'Schindler\'s List',
+      genre: {name: 'drama'},
+      director: { 'name': 'Steven Spielberg' }
     },
     {
-        id: 5,
-        title: 'The Godfather: Part II',
-        director: 'Francis Ford Coppola'
+      id: 5,
+      title: 'The Godfather: Part II',
+      genre: {name: 'drama'},
+      director: { 'name': 'Francis Ford Coppola' }
     },
     {
         id: 6,
         title: '12 Angry Men',
-        director: 'Sidney Lumet'
+        genre: {name: 'drama'},
+      director: { 'name': 'Sidney Lumet' }
     },
     {
         id: 7,
-        title: 'The Lord of the Rings: The Fellowship of the Ring',
-        director: 'Peter Jackson'
+      title: 'The Lord of the Rings: The Fellowship of the Ring',
+        genre: {name: 'drama'},
+      director: { 'name': 'Peter Jackson' }
     },
     {
         id: 8,
-        title: 'Pulp Fiction',
-        director: 'Quentin Tarantino'
+      title: 'Pulp Fiction',
+        genre: {name: 'drama'},
+      director: { 'name': 'Quentin Tarantino' }
     },
     {
         id: 9,
-        title: 'Inception',
-        director: 'Christopher Nolan'
+      title: 'Inception',
+      genre: { name: 'drama' },
+      director: { 'name': 'Christopher Nolan' }
     }
     ];
 
-  // GET requests
-  app.get('/', (req, res) => {
-    res.send('Welcome to the myFlix app!!!');
+  // GET requests for movies
+app.get('/', (req, res) => {
+    res.status(200).send('Welcome to the myFlix app!!!');
   });
+
+  //GET all movies
+  app.get('/movies', (req, res) => {
+    res.status(200).json(movies);
+  });
+  
+
+//GET movie by name
+app.get('/movies/:title', (req, res) => {
+  const { title } = req.params;
+  const movie = movies.find(movie => movie.title === title);
+  if (!movie) {
+    res.status(400).send(`title ${title} not found`);
+  }
+
+  res.status(200).json(movie);
+  });
+  
   
   app.get('/documentation', (req, res) => {                  
     res.sendFile('public/documentation.html', { root: __dirname });
   });
-  
-  app.get('/movies', (req, res) => {
-    res.json(topMovies);
-  });
-  
+
   //error handling middleware function
   app.use((err, req, res, next) => {
     console.error(err.stack);
