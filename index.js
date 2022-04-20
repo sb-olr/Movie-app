@@ -143,7 +143,7 @@ app.get('/users', (req, res) => {
 });
 
 //GET user by name
-app.get('/users/:name', (req, res) => {
+app.get('/users/name/:name', (req, res) => {
   const { name } = req.params;
   const user = users.find(user => user.name === name);
   if (!user) {
@@ -154,7 +154,7 @@ app.get('/users/:name', (req, res) => {
 });
 
 //GET user by id
-app.get('/users/id/:id', (req, res) => {
+app.get('/users/:id', (req, res) => {
   const { id } = req.params;
   const user = users.find(user => user.id == id);
   if (!user) {
@@ -164,10 +164,23 @@ app.get('/users/id/:id', (req, res) => {
   res.status(200).json(user);
 });
 
+//POST a new user
+app.post('/users', (req, res) => {
+  const user = req.body;
+  if (!user.name) {
+    res.status(400).send('user name cannot be empty!')
+  }
+  user.id = uuid.v4();
+  users.push(user);
+  res.status(200).json(user);
+})
+
+
 //GET documentation
 app.get('/documentation', (req, res) => {                  
     res.sendFile('public/documentation.html', { root: __dirname });
 });
+
 
 //error handling middleware function
 app.use((err, req, res, next) => {
