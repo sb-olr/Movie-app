@@ -18,6 +18,19 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
   // setup the logger
 app.use(morgan('combined', {stream: accessLogStream}));
 
+let users = [
+  {
+    id: 1,
+    name: "User1",
+    favMovies: []
+  },
+  {
+    id: 2,
+    name: "User2",
+    favMovies: []
+  },
+]
+
 let movies = [
     {
         id: 0,
@@ -97,10 +110,10 @@ app.get('/movies/:title', (req, res) => {
   const movie = movies.find(movie => movie.title === title);
   if (!movie) {
     res.status(400).send(`title ${title} not found`);
-  }
+}
 
   res.status(200).json(movie);
-  });
+});
   
 //GET genre
 app.get('/genre/:genreName', (req, res) => {
@@ -111,7 +124,7 @@ app.get('/genre/:genreName', (req, res) => {
   }
 
   res.status(200).json(movie.genre);
-  });
+});
 
 //GET director
 app.get('/directors/:directorName', (req, res) => {
@@ -122,19 +135,46 @@ app.get('/directors/:directorName', (req, res) => {
   }
 
   res.status(200).json(movie.director);
-  });
+});
+
+//GET all users
+app.get('/users', (req, res) => {
+  res.status(200).json(users);
+});
+
+//GET user by name
+app.get('/users/:name', (req, res) => {
+  const { name } = req.params;
+  const user = users.find(user => user.name === name);
+  if (!user) {
+    res.status(400).send(`user ${name} not found`);
+  }
+
+  res.status(200).json(user);
+});
+
+//GET user by id
+app.get('/users/id/:id', (req, res) => {
+  const { id } = req.params;
+  const user = users.find(user => user.id == id);
+  if (!user) {
+    res.status(400).send(`user id ${id} not found`);
+  }
+
+  res.status(200).json(user);
+});
 
 //GET documentation
 app.get('/documentation', (req, res) => {                  
     res.sendFile('public/documentation.html', { root: __dirname });
-  });
+});
 
 //error handling middleware function
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('An Error was encountered!');
-  });
+});
 // listen for requests
 app.listen(port, () => {
     console.log(`Your app is listening on port ${port}.`);
-  })
+})
