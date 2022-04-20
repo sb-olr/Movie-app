@@ -171,6 +171,7 @@ app.post('/users', (req, res) => {
     res.status(400).send('user name cannot be empty!')
   }
   user.id = uuid.v4();
+  user.favMovies = [];
   users.push(user);
   res.status(201).json(user);
 })
@@ -186,7 +187,6 @@ app.put("/users/:id", (req, res) => {
     res.status(400).send("no such user");
   }
   user.name = updatedUser.name;
-  user.favMovies = [];
   res.status(200).json(user);
 });
 
