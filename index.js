@@ -116,7 +116,7 @@ app.get('/movies/:title', (req, res) => {
 });
   
 //GET genre
-app.get('/genre/:genreName', (req, res) => {
+app.get('/movies/genre/:genreName', (req, res) => {
   const { genreName } = req.params;
   const movie = movies.find(movie => movie.genre.name === genreName);
   if (!movie) {
@@ -127,7 +127,7 @@ app.get('/genre/:genreName', (req, res) => {
 });
 
 //GET director
-app.get('/directors/:directorName', (req, res) => {
+app.get('/movies/directors/:directorName', (req, res) => {
   const { directorName } = req.params;
   const movie = movies.find(movie => movie.director.name === directorName);
   if (!movie) {
