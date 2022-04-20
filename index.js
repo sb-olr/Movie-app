@@ -27,7 +27,7 @@ let users = [
   {
     id: 2,
     name: "User2",
-    favMovies: []
+    favMovies: ['test1', 'test2', 'test3']
   },
 ]
 
@@ -172,7 +172,7 @@ app.post('/users', (req, res) => {
   }
   user.id = uuid.v4();
   users.push(user);
-  res.status(200).json(user);
+  res.status(201).json(user);
 })
 
 //PUT or update a user name
@@ -185,9 +185,52 @@ app.put("/users/:id", (req, res) => {
   if (!user) {
     res.status(400).send("no such user");
   }
-    user.name = updatedUser.name;
-    res.status(200).json(user);
+  user.name = updatedUser.name;
+  res.status(200).json(user);
 });
+
+//DElETE a user
+app.delete('/users/:id', (req, res) => {
+  const { id } = req.params;
+
+  let user = users.find(user => user.id == id);
+
+  if (!user) {
+    res.status(400).send(`user ${id} not found`);
+  }
+
+  users = users.filter((user) => user.id != id);
+  res.status(200).send(`user ${id} has been deleted`);
+});
+
+//POST a fav movie for a user
+app.post('/users/:id/:movie', (req, res) => {
+  const {id, movie} = req.params;
+  let user = users.find(user => user.id == id);
+
+  if (!user) {
+      res.status(400).send(`user ${id} not found`);
+  }
+
+  user.favMovies.push(movie);
+  res.status(201).json(user);
+
+})
+
+//DELETE a movie from the users fav movie list
+app.delete('/users/:id/:movie', (req, res) => {
+  const { id, movie } = req.params;
+  let user = users.find(user => user.id == id);
+
+  if (!user) {
+      res.status(400).send(`user ${id} not found`);
+  }
+
+  user.favMovies = user.favMovies.filter(favMovie => favMovie !== movie);
+  // user.favMovies = updatedMovies;
+  res.status(200).json(user);
+
+})
 
 //GET documentation
 app.get('/documentation', (req, res) => {                  
