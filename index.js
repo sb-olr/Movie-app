@@ -1,9 +1,11 @@
 const express = require('express'),
-    morgan = require('morgan'),
-    fs = require('fs'), // import built in node modules fs and path 
-    path = require('path');
+  morgan = require('morgan'),
+  fs = require('fs'), // import built in node modules fs and path 
+  path = require('path'),
+  uuid = require('uuid'),
+  body-parser = require('body-parser');
 
-const port = 8080;
+const port = 3000;
 
 const app = express();
 app.use(express.static('public')); //to specify static files folder
