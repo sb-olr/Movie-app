@@ -103,17 +103,29 @@ app.get('/movies/:title', (req, res) => {
   res.status(200).json(movie);
   });
   
+//GET genre
+app.get('/genre/:genreName', (req, res) => {
+  const { genreName } = req.params;
+  // const genre = movies.find(movie => movie.genre.name === genreName).genre;
+  const movie = movies.find(movie => movie.genre.name === genreName).genre;
+  if (!genre) {
+    res.status(400).send(`genre ${genreName} not found`);
+  }
+
+  res.status(200).json(genre);
+  });
   
-  app.get('/documentation', (req, res) => {                  
+//GET documentation
+app.get('/documentation', (req, res) => {                  
     res.sendFile('public/documentation.html', { root: __dirname });
   });
 
   //error handling middleware function
-  app.use((err, req, res, next) => {
+app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('An Error was encountered!');
   });
   // listen for requests
-  app.listen(port, () => {
+app.listen(port, () => {
     console.log(`Your app is listening on port ${port}.`);
   })

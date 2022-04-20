@@ -12,3 +12,5 @@
 ::1 - - [20/Apr/2022:08:33:20 +0000] "GET / HTTP/1.1" 200 28 "-" "PostmanRuntime/7.28.4"
 ::1 - - [20/Apr/2022:08:34:51 +0000] "GET /movies HTTP/1.1" 200 1057 "-" "PostmanRuntime/7.28.4"
 ::1 - - [20/Apr/2022:08:37:00 +0000] "GET /movies/The%20Godfather HTTP/1.1" 200 100 "-" "PostmanRuntime/7.28.4"
+::1 - - [20/Apr/2022:08:46:43 +0000] "GET /genre/drama HTTP/1.1" 404 150 "-" "PostmanRuntime/7.28.4"
+::1 - - [20/Apr/2022:08:48:14 +0000] "GET /genre/drama HTTP/1.1" 200 16 "-" "PostmanRuntime/7.28.4"
