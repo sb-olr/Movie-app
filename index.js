@@ -186,6 +186,7 @@ app.put("/users/:id", (req, res) => {
     res.status(400).send("no such user");
   }
   user.name = updatedUser.name;
+  user.favMovies = [];
   res.status(200).json(user);
 });
 
