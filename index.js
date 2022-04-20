@@ -106,13 +106,12 @@ app.get('/movies/:title', (req, res) => {
 //GET genre
 app.get('/genre/:genreName', (req, res) => {
   const { genreName } = req.params;
-  // const genre = movies.find(movie => movie.genre.name === genreName).genre;
-  const movie = movies.find(movie => movie.genre.name === genreName).genre;
-  if (!genre) {
+  const movie = movies.find(movie => movie.genre.name === genreName);
+  if (!movie) {
     res.status(400).send(`genre ${genreName} not found`);
   }
 
-  res.status(200).json(genre);
+  res.status(200).json(movie.genre);
   });
   
 //GET documentation
