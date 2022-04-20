@@ -164,7 +164,7 @@ app.get('/users/:id', (req, res) => {
   res.status(200).json(user);
 });
 
-//POST a new user
+//POST or create a new user
 app.post('/users', (req, res) => {
   const user = req.body;
   if (!user.name) {
@@ -175,6 +175,19 @@ app.post('/users', (req, res) => {
   res.status(200).json(user);
 })
 
+//PUT or update a user name
+app.put("/users/:id", (req, res) => {
+  const { id } = req.params;
+  const updatedUser = req.body;
+
+  let user = users.find(user => user.id == id);
+
+  if (!user) {
+    res.status(400).send("no such user");
+  }
+    user.name = updatedUser.name;
+    res.status(200).json(user);
+});
 
 //GET documentation
 app.get('/documentation', (req, res) => {                  
