@@ -90,7 +90,6 @@ app.get('/', (req, res) => {
   app.get('/movies', (req, res) => {
     res.status(200).json(movies);
   });
-  
 
 //GET movie by name
 app.get('/movies/:title', (req, res) => {
@@ -113,18 +112,29 @@ app.get('/genre/:genreName', (req, res) => {
 
   res.status(200).json(movie.genre);
   });
-  
+
+//GET director
+app.get('/directors/:directorName', (req, res) => {
+  const { directorName } = req.params;
+  const movie = movies.find(movie => movie.director.name === directorName);
+  if (!movie) {
+    res.status(400).send(`director ${directorName} not found`);
+  }
+
+  res.status(200).json(movie.director);
+  });
+
 //GET documentation
 app.get('/documentation', (req, res) => {                  
     res.sendFile('public/documentation.html', { root: __dirname });
   });
 
-  //error handling middleware function
+//error handling middleware function
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('An Error was encountered!');
   });
-  // listen for requests
+// listen for requests
 app.listen(port, () => {
     console.log(`Your app is listening on port ${port}.`);
   })
