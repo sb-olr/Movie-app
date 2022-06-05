@@ -3,11 +3,13 @@ const express = require('express'),
   fs = require('fs'),
   path = require('path'),
   uuid = require('uuid'),
-  bodyParser = require('body-parser');
+  bodyParser = require('body-parser'),
+  mongoose = require('mongoose');
 
 const port = 3000;
+const dbname = 'myFlixDB';
+mongoose.connect(`mongodb://localhost:27017/${dbname}`, { useNewUrlParser: true, useUnifiedTopology: true });
 
-const mongoose = require('mongoose');
 const Models = require('./models.js');
 
 const Movies = Models.Movie;
@@ -15,6 +17,7 @@ const Users = Models.User;
 
 const app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static('public')); //to specify static files folder
   // create a write stream (in append mode)
@@ -171,16 +174,39 @@ app.get('/users/:id', (req, res) => {
 });
 
 //POST or create a new user
+/* We’ll expect JSON in this format
+{
+  Username: String, *
+  Password: String, *
+  Email: String, *
+  Birthday: Date
+}*/
 app.post('/users', (req, res) => {
-  const user = req.body;
-  if (!user.name) {
-    res.status(400).send('user name cannot be empty!')
-  }
-  user.id = uuid.v4();
-  user.favMovies = [];
-  users.push(user);
-  res.status(201).json(user);
-})
+  Users.findOne({ Username: req.body.Username })
+    .then(user => {
+      if (user) {
+        return res.status(400).send(req.body.Username + 'already exists');
+      } else {
+        Users
+          .create({
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
+          })
+          .then( user =>{res.status(201).json(user) })
+          .catch(error => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+          })
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
+});
+
 
 //PUT or update a user name
 app.put("/users/:id", (req, res) => {
