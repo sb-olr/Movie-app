@@ -1,11 +1,17 @@
 const express = require('express'),
   morgan = require('morgan'),
-  fs = require('fs'), // import built in node modules fs and path 
+  fs = require('fs'),
   path = require('path'),
   uuid = require('uuid'),
   bodyParser = require('body-parser');
 
 const port = 3000;
+
+const mongoose = require('mongoose');
+const Models = require('./models.js');
+
+const Movies = Models.Movie;
+const Users = Models.User;
 
 const app = express();
 app.use(bodyParser.json());
