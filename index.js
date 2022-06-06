@@ -200,17 +200,19 @@ app.get('/users/:_id', (req, res) => {
   Birthday: Date
 }*/
 app.post('/users', (req, res) => {
-  Users.findOne({ Username: req.body.Username })
+  const { Username, Password, Email, Birthday } = req.params;
+
+  Users.findOne({ Username })
     .then(user => {
       if (user) {
-        return res.status(400).send(`Username: ${req.body.Username} already exists`);
+        return res.status(400).send(`Username: ${Username} already exists`);
       } else {
         Users
           .create({
-            Username: req.body.Username,
-            Password: req.body.Password,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday
+            Username,
+            Password,
+            Email,
+            Birthday
           })
           .then( user => res.status(201).json(user))
           .catch(error => {
