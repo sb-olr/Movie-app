@@ -160,14 +160,15 @@ app.get('/users', (req, res) => {
 });
 
 //GET user by name
-app.get('/users/name/:name', (req, res) => {
-  const { name } = req.params;
-  const user = users.find(user => user.name === name);
-  if (!user) {
-    res.status(400).send(`user ${name} not found`);
-  }
-
-  res.status(200).json(user);
+app.get('/users/name/:Username', (req, res) => {
+  Users.findOne({ Username: req.params.Username })
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 //GET user by id
