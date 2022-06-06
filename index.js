@@ -6,8 +6,8 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   mongoose = require('mongoose');
 
-const port = 3000;
-const dbname = 'myFlixDB';
+const port = process.env.port || 3000;
+const dbname = process.env.dbname || 'myFlixDB';
 mongoose.connect(`mongodb://localhost:27017/${dbname}`, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const Models = require('./models.js');
@@ -185,7 +185,7 @@ app.post('/users', (req, res) => {
   Users.findOne({ Username: req.body.Username })
     .then(user => {
       if (user) {
-        return res.status(400).send(req.body.Username + 'already exists');
+        return res.status(400).send(`Username: ${req.body.Username} already exists`);
       } else {
         Users
           .create({
@@ -194,7 +194,7 @@ app.post('/users', (req, res) => {
             Email: req.body.Email,
             Birthday: req.body.Birthday
           })
-          .then( user =>{res.status(201).json(user) })
+          .then( user => res.status(201).json(user))
           .catch(error => {
             console.error(error);
             res.status(500).send('Error: ' + error);
