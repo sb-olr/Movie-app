@@ -161,25 +161,34 @@ app.get('/users', (req, res) => {
 
 //GET user by name
 app.get('/users/name/:Username', (req, res) => {
-  Users.findOne({ Username: req.params.Username })
-    .then((user) => {
+  const { Username } = req.params;
+  Users.findOne({ Username })
+    .then(user => {
+      if (!user) {
+        res.status(400).send(`Username ${Username} not found`);
+      }
       res.json(user);
     })
-    .catch((err) => {
+    .catch(err => {
       console.error(err);
       res.status(500).send('Error: ' + err);
     });
 });
 
 //GET user by id
-app.get('/users/:id', (req, res) => {
-  const { id } = req.params;
-  const user = users.find(user => user.id == id);
-  if (!user) {
-    res.status(400).send(`user id ${id} not found`);
-  }
-
-  res.status(200).json(user);
+app.get('/users/:_id', (req, res) => {
+  const { _id } = req.params;
+  Users.findOne({ _id })
+    .then(user => {
+      if (!user) {
+        res.status(400).send(`User id ${_id} not found`);
+      }
+      res.json(user);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 //POST or create a new user
