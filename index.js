@@ -274,21 +274,6 @@ app.post('/users/:id/:movie', (req, res) => {
 })
 
 //DELETE a movie from the users fav movie list
-// Delete a user by username
-app.delete('/users/:Username', (req, res) => {
-  Users.findOneAndRemove({ Username: req.params.Username })
-    .then((user) => {
-      if (!user) {
-        res.status(400).send(req.params.Username + ' was not found');
-      } else {
-        res.status(200).send(req.params.Username + ' was deleted.');
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
-});
 
 // app.delete('/users/:id/:movie', (req, res) => {
 //   const { id, movie } = req.params;
