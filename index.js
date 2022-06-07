@@ -209,7 +209,7 @@ app.put('/users/name/:Username', (req, res) => {
   });
 });
 
-//DElETE a user by name
+//DELETE a user by name
 app.delete('/users/name/:Username', (req, res) => {
   const { Username } = req.params;
   Users.findOneAndRemove({ Username })
@@ -230,19 +230,18 @@ app.delete('/users/name/:Username', (req, res) => {
 app.post('/users/:Username/:MovieID', (req, res) => {
   const { Username, MovieID } = req.params;
 
-  Users.findOneAndUpdate({ Username }, {
-     $push: { FavoriteMovies: MovieID }
-   },
-   { new: true }, // This line makes sure that the updated document is returned
-  (err, updatedUser) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    } else {
-      res.json(updatedUser);
-    }
+  Users.findOneAndUpdate({ Username },
+    { $addToSet: { FavoriteMovies: MovieID } },
+    { new: true }, // This line makes sure that the updated document is returned
+    (err, updatedUser) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      } else {
+        res.json(updatedUser);
+      }
+    });
   });
-});
 
 //DELETE a movie from the users fav movie list
 app.delete('/users/:Username/:MovieID', (req, res) => {
