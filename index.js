@@ -46,14 +46,20 @@ let movies;
 
 
 //GET movie by name
-app.get('/movies/:title', (req, res) => {
-  const { title } = req.params;
-  const movie = movies.find(movie => movie.title === title);
-  if (!movie) {
-    res.status(400).send(`title ${title} not found`);
-}
-
-  res.status(200).json(movie);
+app.get('/movies/:Title', (req, res) => {
+  const { Title } = req.params;
+  Movies.findOne({ Title })
+    .then(movie => {
+      if (!movie) {
+        res.status(400).end(`Could not find Movie with title: ${Title}`);
+      } else {
+        res.status(200).json(movie);
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
   
 //GET genre
@@ -77,7 +83,6 @@ app.get('/movies/directors/:directorName', (req, res) => {
 
   res.status(200).json(movie.director);
 });
-// });
 
 //GET all users
 app.get('/users', (req, res) => {
