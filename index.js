@@ -27,19 +27,6 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
   // setup the logger
 app.use(morgan('combined', {stream: accessLogStream}));
 
-let users = [
-  {
-    id: 1,
-    name: "User1",
-    favMovies: []
-  },
-  {
-    id: 2,
-    name: "User2",
-    favMovies: ['test1', 'test2', 'test3']
-  },
-]
-
 let movies = [
     {
         id: 0,
@@ -200,7 +187,7 @@ app.get('/users/:_id', (req, res) => {
   Birthday: Date
 }*/
 app.post('/users', (req, res) => {
-  const { Username, Password, Email, Birthday } = req.params;
+  const { Username, Password, Email, Birthday, FavoriteMovies } = req.body;
 
   Users.findOne({ Username })
     .then(user => {
@@ -212,7 +199,8 @@ app.post('/users', (req, res) => {
             Username,
             Password,
             Email,
-            Birthday
+            Birthday,
+            FavoriteMovies
           })
           .then( user => res.status(201).json(user))
           .catch(error => {
@@ -228,18 +216,33 @@ app.post('/users', (req, res) => {
 });
 
 
-//PUT or update a user name
-app.put("/users/:id", (req, res) => {
-  const { id } = req.params;
-  const updatedUser = req.body;
-
-  let user = users.find(user => user.id == id);
-
-  if (!user) {
-    res.status(400).send("no such user");
-  }
-  user.name = updatedUser.name;
-  res.status(200).json(user);
+//PUT or update a user by name
+app.put('/users/name/:Username', (req, res) => {
+  const { Username, Password, Email, Birthday, FavoriteMovies } = req.body;
+  Users.findOneAndUpdate({ Username: req.params.Username },
+    {
+      $set:
+      {
+        Username,
+        Password,
+        Email,
+        Birthday,
+        FavoriteMovies
+      }
+    },
+  { new: true }, // This line makes sure that the updated document is returned
+  (err, updatedUser) => {
+    if(err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    } else {
+      if (!updatedUser) {
+        res.status(400).send(`Username ${Username} was not found`);
+      } else {
+        res.json(updatedUser);
+      }
+    }
+  });
 });
 
 //DElETE a user by name
@@ -260,6 +263,22 @@ app.delete('/users/name/:Username', (req, res) => {
 });
 
 //POST a fav movie for a user
+// Add a movie to a user's list of favorites
+app.post('/users/name/:Username/movies/:MovieID', (req, res) => {
+  const { Username, MovieID } = req.params;
+  Users.findOneAndUpdate({ Username }, {
+     $push: { FavoriteMovies: MovieID }
+   },
+   { new: true }, // This line makes sure that the updated document is returned
+  (err, updatedUser) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    } else {
+      res.json(updatedUser);
+    }
+  });
+});
 app.post('/users/:id/:movie', (req, res) => {
   const {id, movie} = req.params;
   let user = users.find(user => user.id == id);
