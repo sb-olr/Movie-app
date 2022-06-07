@@ -227,8 +227,7 @@ app.delete('/users/name/:Username', (req, res) => {
 });
 
 //POST a fav movie for a user
-// Add a movie to a user's list of favorites
-app.post('/users/name/:Username/movies/:MovieID', (req, res) => {
+app.post('/users/:Username/movies/:MovieID', (req, res) => {
   const { Username, MovieID } = req.params;
   Users.findOneAndUpdate({ Username }, {
      $push: { FavoriteMovies: MovieID }
@@ -243,18 +242,6 @@ app.post('/users/name/:Username/movies/:MovieID', (req, res) => {
     }
   });
 });
-app.post('/users/:id/:movie', (req, res) => {
-  const {id, movie} = req.params;
-  let user = users.find(user => user.id == id);
-
-  if (!user) {
-      res.status(400).send(`user ${id} not found`);
-  }
-
-  user.favMovies.push(movie);
-  res.status(201).json(user);
-
-})
 
 //DELETE a movie from the users fav movie list
 
