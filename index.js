@@ -227,8 +227,9 @@ app.delete('/users/name/:Username', (req, res) => {
 });
 
 //POST a fav movie for a user
-app.post('/users/:Username/movies/:MovieID', (req, res) => {
+app.post('/users/:Username/:MovieID', (req, res) => {
   const { Username, MovieID } = req.params;
+
   Users.findOneAndUpdate({ Username }, {
      $push: { FavoriteMovies: MovieID }
    },
@@ -244,20 +245,21 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => {
 });
 
 //DELETE a movie from the users fav movie list
+app.delete('/users/:Username/:MovieID', (req, res) => {
+  const { Username, MovieID } = req.params;
 
-// app.delete('/users/:id/:movie', (req, res) => {
-//   const { id, movie } = req.params;
-//   let user = users.find(user => user.id == id);
-
-//   if (!user) {
-//       res.status(400).send(`user ${id} not found`);
-//   }
-
-//   user.favMovies = user.favMovies.filter(favMovie => favMovie !== movie);
-//   // user.favMovies = updatedMovies;
-//   res.status(200).json(user);
-
-// })
+  Users.findOneAndUpdate({ Username },
+    { $pull: { FavoriteMovies: MovieID } },
+    { new: true }, // return updated document
+    (err, updatedUser) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      } else {
+        res.json(updatedUser);
+      }
+  });
+});
 
 //GET documentation
 app.get('/documentation', (req, res) => {                  
