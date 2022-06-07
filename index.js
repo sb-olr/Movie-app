@@ -27,78 +27,23 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
   // setup the logger
 app.use(morgan('combined', {stream: accessLogStream}));
 
-let movies = [
-    {
-        id: 0,
-    title: 'The Shawshank Redemption',
-        genre: {name: 'drama'},
-    director: { 'name': 'Frank Darabont' }
-    },
-    {
-        id: 1,
-        title: 'The Godfather',
-        genre: {name: 'drama'},
-      director: { 'name': 'Francis Ford Coppola' }
-    },
-    {
-        id: 2,
-      title: 'The Dark Knight',
-        genre: {name: 'drama'},
-      director: { 'name': 'Christopher Nolan' }
-    },
-    {
-      id: 3,
-      title: 'The Lord of the Rings: The Return of the King',
-      genre: {name: 'drama'},
-      director: { 'name': 'Peter Jackson' }
-    },
-    {
-      id: 4,
-      title: 'Schindler\'s List',
-      genre: {name: 'drama'},
-      director: { 'name': 'Steven Spielberg' }
-    },
-    {
-      id: 5,
-      title: 'The Godfather: Part II',
-      genre: {name: 'drama'},
-      director: { 'name': 'Francis Ford Coppola' }
-    },
-    {
-        id: 6,
-        title: '12 Angry Men',
-        genre: {name: 'drama'},
-      director: { 'name': 'Sidney Lumet' }
-    },
-    {
-        id: 7,
-      title: 'The Lord of the Rings: The Fellowship of the Ring',
-        genre: {name: 'drama'},
-      director: { 'name': 'Peter Jackson' }
-    },
-    {
-        id: 8,
-      title: 'Pulp Fiction',
-        genre: {name: 'drama'},
-      director: { 'name': 'Quentin Tarantino' }
-    },
-    {
-        id: 9,
-      title: 'Inception',
-      genre: { name: 'drama' },
-      director: { 'name': 'Christopher Nolan' }
-    }
-    ];
+let movies;
 
-  // GET requests for movies
-app.get('/', (req, res) => {
+  // home
+  app.get('/', (req, res) => {
     res.status(200).send('Welcome to the myFlix app!!!');
   });
 
   //GET all movies
   app.get('/movies', (req, res) => {
-    res.status(200).json(movies);
-  });
+    Movies.find()
+    .then(movies => res.status(201).json(movies))
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
 
 //GET movie by name
 app.get('/movies/:title', (req, res) => {
