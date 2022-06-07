@@ -63,15 +63,22 @@ app.get('/movies/:Title', (req, res) => {
 });
   
 //GET genre
-app.get('/movies/genre/:genreName', (req, res) => {
+app.get('/movies/genres/:genreName', (req, res) => {
   const { genreName } = req.params;
-  const movie = movies.find(movie => movie.genre.name === genreName);
-  if (!movie) {
-    res.status(400).send(`genre ${genreName} not found`);
-  }
+  Movies.findOne({'Genre.Name' : genreName })
+    .then(movie => {
+      if (!movie) {
+        res.status(400).end(`genre ${genreName} not found`);
+      } else {
+        res.status(201).json(movie.Genre);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+  });
 
-  res.status(200).json(movie.genre);
-});
 
 //GET director
 app.get('/movies/directors/:directorName', (req, res) => {
