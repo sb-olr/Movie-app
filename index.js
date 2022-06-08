@@ -27,8 +27,6 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
   // setup the logger
 app.use(morgan('combined', {stream: accessLogStream}));
 
-let movies;
-
   // home
   app.get('/', (req, res) => {
     res.status(200).send('Welcome to the myFlix app!!!');
