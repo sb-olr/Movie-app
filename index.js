@@ -163,7 +163,8 @@ app.get('/users/:_id', passport.authenticate('jwt', { session: false }), (req, r
 
 //POST or create a new user
 app.post('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
-  const { Username, Password, Email, Birthday, FavoriteMovies } = req.body;
+  const { Username, Email, Birthday, FavoriteMovies } = req.body;
+  const Password = Users.hashPassword(req.body.Password);
 
   Users.findOne({ Username })
     .then(user => {
@@ -194,7 +195,12 @@ app.post('/users', passport.authenticate('jwt', { session: false }), (req, res) 
 
 //PUT or update a user by name
 app.put('/users/name/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
-  const { Username, Password, Email, Birthday, FavoriteMovies } = req.body;
+  const { Username, Email, Birthday, FavoriteMovies } = req.body;
+  let { Password } = req.body;
+  if (Password) {
+    Password = Users.hashPassword(Password)
+  } 
+
   Users.findOneAndUpdate({ Username: req.params.Username },
     {
       $set:
