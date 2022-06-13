@@ -4,6 +4,7 @@ const express = require('express'),
   path = require('path'),
   bodyParser = require('body-parser'),
   mongoose = require('mongoose');
+const { check, validationResult } = require('express-validator');
 
 const port = process.env.port || 3000;
 const dbname = process.env.dbname || 'myFlixDB';
@@ -162,7 +163,25 @@ app.get('/users/:_id', passport.authenticate('jwt', { session: false }), (req, r
 });
 
 //POST or create a new user
-app.post('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.post('/users', passport.authenticate('jwt', { session: false }),
+  // Validation logic here for request
+  //you can either use a chain of methods like .not().isEmpty()
+  //which means "opposite of isEmpty" in plain english "is not empty"
+  //or use .isLength({min: 5}) which means
+  //minimum value of 5 characters are only allowed
+  [
+    check('Username', 'Username is required and should be minimum 5 chars').isLength({min: 5}),
+    check('Username', 'Username should contain alphanumeric characters only').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Please enter a valid Email').isEmail()
+  ], (req, res) => {
+  // check the validation object for errors
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
   const { Username, Email, Birthday, FavoriteMovies } = req.body;
   const Password = Users.hashPassword(req.body.Password);
 
@@ -194,7 +213,20 @@ app.post('/users', passport.authenticate('jwt', { session: false }), (req, res) 
 
 
 //PUT or update a user by name
-app.put('/users/name/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.put('/users/name/:Username', passport.authenticate('jwt', { session: false }),
+  [
+    check('Username', 'Username is required and should be minimum 5 chars').isLength({min: 5}),
+    check('Username', 'Username should contain alphanumeric characters only').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Please enter a valid Email').isEmail()
+  ], (req, res) => {
+  // check the validation object for errors
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+  
   const { Username, Email, Birthday, FavoriteMovies } = req.body;
   let { Password } = req.body;
   if (Password) {
