@@ -8,7 +8,9 @@ const { check, validationResult } = require('express-validator');
 
 const port = process.env.PORT || 3000;
 const dbname = process.env.DBNAME || 'myFlixDB';
-mongoose.connect(`mongodb://localhost:27017/${dbname}`, { useNewUrlParser: true, useUnifiedTopology: true });
+const connection_string = process.env.CONNECTION_URI || `mongodb://localhost:27017/${dbname}`;
+
+mongoose.connect(connection_string, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const Models = require('./models.js');
 
