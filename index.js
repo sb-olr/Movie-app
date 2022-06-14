@@ -165,7 +165,8 @@ app.get('/users/:_id', passport.authenticate('jwt', { session: false }), (req, r
 });
 
 //POST or create a new user
-app.post('/users', passport.authenticate('jwt', { session: false }),
+// app.post('/users', passport.authenticate('jwt', { session: false }),
+app.post('/users',
   // Validation logic here for request
   //you can either use a chain of methods like .not().isEmpty()
   //which means "opposite of isEmpty" in plain english "is not empty"
