@@ -6,8 +6,8 @@ const express = require('express'),
   mongoose = require('mongoose');
 const { check, validationResult } = require('express-validator');
 
-const port = process.env.port || 3000;
-const dbname = process.env.dbname || 'myFlixDB';
+const port = process.env.PORT || 3000;
+const dbname = process.env.DBNAME || 'myFlixDB';
 mongoose.connect(`mongodb://localhost:27017/${dbname}`, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const Models = require('./models.js');
