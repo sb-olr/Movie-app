@@ -165,7 +165,6 @@ app.get('/users/:_id', passport.authenticate('jwt', { session: false }), (req, r
 });
 
 //POST or create a new user
-// app.post('/users', passport.authenticate('jwt', { session: false }),
 app.post('/users',
   // Validation logic here for request
   //you can either use a chain of methods like .not().isEmpty()
@@ -218,11 +217,12 @@ app.post('/users',
 //PUT or update a user by name
 app.put('/users/name/:Username', passport.authenticate('jwt', { session: false }),
   [
-    check('Username', 'Username is required and should be minimum 5 chars').isLength({min: 5}),
-    check('Username', 'Username should contain alphanumeric characters only').isAlphanumeric(),
-    check('Password', 'Password is required').not().isEmpty(),
-    check('Email', 'Please enter a valid Email').isEmail()
+    check('Username', 'Username is required and should be minimum 5 chars').isLength({min: 5}).optional(),
+    check('Username', 'Username should contain alphanumeric characters only').isAlphanumeric().optional(),
+    check('Password', 'Password is required').not().isEmpty().optional(),
+    check('Email', 'Please enter a valid Email').isEmail().optional()
   ], (req, res) => {
+
   // check the validation object for errors
   let errors = validationResult(req);
 
@@ -230,8 +230,9 @@ app.put('/users/name/:Username', passport.authenticate('jwt', { session: false }
     return res.status(422).json({ errors: errors.array() });
   }
   
-  const { Username, Email, Birthday, FavoriteMovies } = req.body;
+  const { Username, Email, Birthday, FavoriteMovies } = req.body
   let { Password } = req.body;
+
   if (Password) {
     Password = Users.hashPassword(Password)
   } 
