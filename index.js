@@ -66,7 +66,6 @@ app.use(morgan('combined', {stream: accessLogStream}));
     });
 });
 
-
 //GET movie by name
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req, res) => {
   const { Title } = req.params;
@@ -101,7 +100,6 @@ app.get('/movies/genres/:genreName', passport.authenticate('jwt', { session: fal
     });
   });
 
-
 //GET director
 app.get('/movies/directors/:directorName', passport.authenticate('jwt', { session: false }), (req, res) => {
   const { directorName } = req.params;
@@ -118,7 +116,6 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt', { sessio
       res.status(500).send('Error: ' + err);
     });
 });
-
 
 //GET all users
 app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -212,7 +209,6 @@ app.post('/users',
       res.status(500).send('Error: ' + error);
     });
 });
-
 
 //PUT or update a user by name
 app.put('/users/name/:Username', passport.authenticate('jwt', { session: false }),
@@ -319,12 +315,12 @@ app.get('/documentation', (req, res) => {
     res.sendFile('public/documentation.html', { root: __dirname });
 });
 
-
 //error handling middleware function
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('An Error was encountered!');
 });
+
 // listen for requests
 app.listen(port, () => {
     console.log(`Your app is listening on port ${port}.`);
