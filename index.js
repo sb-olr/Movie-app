@@ -255,7 +255,7 @@ app.put('/users/name/:Username', passport.authenticate('jwt', { session: false }
       res.status(500).send('Error: ' + err);
     } else {
       if (!updatedUser) {
-        res.status(400).send(`Username ${Username} was not found`);
+        res.status(400).send(`Username ${req.params.Username} was not found`);
       } else {
         res.json(updatedUser);
       }
