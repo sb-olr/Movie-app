@@ -60,21 +60,41 @@
       </thead>
       <tbody>
         <tr>
-          <td>Login with username and password</td>
+          <td>Register new user</td>
           <td>/users</td>
           <td>POST</td>
           <td>None</td>
-          <td>
+          <td>data about the user to add in json. Example: 
             <pre>
               <code>
-        { 
-        "Username": "TestUser",
-        "Password": "SECRET",
-        "Email": "testing@mail.com"
-        }
+{ 
+  "Username": "TestUser",
+  "Password": "SECRET",
+  "Email": "testing@mail.com"
+}
               </code>
             </pre>
           </td>
+          <td>details about added user including a generated id. Example:
+            <pre>
+              <code>
+{ 
+  "_id": "123232-33435-232",
+  "Username": "TestUser",
+  "Password": "SECRET",
+  "Email": "testing@mail.com",
+  "FavoriteMovies": []
+}
+              </code>
+            </pre>
+          </td>
+        </tr>
+        <tr>
+          <td>Login with username and password</td>
+          <td>/login?Username=[:username]&Password=[:password]</td>
+          <td>POST</td>
+          <td>:username, :password</td>
+          <td>None</td>
           <td>a message about successful login and a Bearer Authorization Token. this token is needed to use the other end points</td>
         </tr>
         <tr>
@@ -94,14 +114,14 @@
           <td>details of the selected movie in json. Example: 
             <pre>
               <code>
-                {
-                  title: '', 
-                  genre: {
-                    name: '',
-                  } 
-                  director: {
-                    name: ''
-                  }
+{
+  title: '', 
+  genre: {
+    name: '',
+  } 
+  director: {
+    name: ''
+}
               </code>
             </pre>
           </td>
@@ -115,9 +135,9 @@
           <td>details about the selected genre in json. Example:
             <pre>
               <code>
-                { 
-                  name: 'Sci-fi'
-                }
+{ 
+  "Name": "Drama"
+}
               </code>
             </pre>
           </td>
@@ -131,40 +151,9 @@
           <td>details about the selected director. Example: 
             <pre>
               <code>
-                { 
-                  name: 'Larry Davidson'
-                }
-              </code>
-            </pre>
-          </td>
-        </tr>
-        <tr>
-          <td>Add new user</td>
-          <td>/users</td>
-          <td>POST</td>
-          <td>None</td>
-          <td>data about the user to add in json. Example: 
-            <pre>
-              <code>
-                { 
-                  "name": "John", 
-                  "FavoriteMovies": [
-                    "Star wars"
-                  ] 
-                }
-              </code>
-            </pre>
-          </td>
-          <td>details about added user including a generated id. Example:
-            <pre>
-              <code>
-                { 
-                  id: '123232-33435-232',
-                "name": "John", 
-                  "FavoriteMovies": [
-                    "Star wars"
-                  ]
-                }
+{ 
+  name: 'Larry Davidson'
+}
               </code>
             </pre>
           </td>
