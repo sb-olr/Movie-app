@@ -276,8 +276,8 @@ app.delete('/users/name/:Username', passport.authenticate('jwt', { session: fals
     });
 });
 
-//POST a fav movie for a user
-app.post('/users/:Username/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
+//PATCH a fav movie for a user
+app.patch('/users/:Username/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
   const { Username, MovieID } = req.params;
 
   Users.findOneAndUpdate({ Username },

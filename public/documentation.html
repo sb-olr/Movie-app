@@ -42,8 +42,8 @@
     <h1>myFlix API Documentation Page</h1>
     <p>
         <mark>
-            This project is about creating a API server which can be used by users to receive information on movies, directors, and genres for selected movies.<br/>
-            Users can also create a profile and save data about their favorite movies.
+          This project is about creating a API server which can be used by users to receive information on movies, directors, and genres for selected movies.<br/>
+          Users can also create a profile and save data about their favorite movies.
         </mark>
     </p>
 
@@ -60,6 +60,24 @@
       </thead>
       <tbody>
         <tr>
+          <td>Login with username and password</td>
+          <td>/users</td>
+          <td>POST</td>
+          <td>None</td>
+          <td>
+            <pre>
+              <code>
+        { 
+        "Username": "TestUser",
+        "Password": "SECRET",
+        "Email": "testing@mail.com"
+        }
+              </code>
+            </pre>
+          </td>
+          <td>a message about successful login and a Bearer Authorization Token. this token is needed to use the other end points</td>
+        </tr>
+        <tr>
           <td>List all movies</td>
           <td>/movies</td>
           <td>GET</td>
@@ -69,53 +87,53 @@
         </tr>
         <tr>
           <td>Show details of a movie by title</td>
-          <td>/movies/[title]</td>
+          <td>/movies/[:title]</td>
           <td>GET</td>
           <td>:title</td>
           <td>None</td>
           <td>details of the selected movie in json. Example: 
             <pre>
               <code>
-    {
-      title: '', 
-      genre: {
-        name: '',
-      } 
-      director: {
-        name: ''
-      }
+                {
+                  title: '', 
+                  genre: {
+                    name: '',
+                  } 
+                  director: {
+                    name: ''
+                  }
               </code>
             </pre>
           </td>
         </tr>
         <tr>
           <td>Show details for a genre</td>
-          <td>/movies/genre/[genre]</td>
+          <td>/movies/genres/[:genre]</td>
           <td>GET</td>
           <td>:genre</td>
           <td>None</td>
           <td>details about the selected genre in json. Example:
             <pre>
               <code>
-    { 
-      name: 'Sci-fi'
-    }
+                { 
+                  name: 'Sci-fi'
+                }
               </code>
             </pre>
           </td>
         </tr>
         <tr>
           <td>Show a director's details by name</td>
-          <td>/movies/directors/[name]</td>
+          <td>/movies/directors/[:name]</td>
           <td>GET</td>
           <td>:name</td>
           <td>None</td>
           <td>details about the selected director. Example: 
             <pre>
               <code>
-    { 
-      name: 'Larry Davidson'
-    }
+                { 
+                  name: 'Larry Davidson'
+                }
               </code>
             </pre>
           </td>
@@ -128,53 +146,53 @@
           <td>data about the user to add in json. Example: 
             <pre>
               <code>
-    { 
-      "name": "John", 
-      "favMovies": [
-        "Star wars"
-      ] 
-    }
+                { 
+                  "name": "John", 
+                  "FavoriteMovies": [
+                    "Star wars"
+                  ] 
+                }
               </code>
             </pre>
           </td>
           <td>details about added user including a generated id. Example:
             <pre>
               <code>
-    { 
-      id: '123232-33435-232',
-     "name": "John", 
-      "favMovies": [
-        "Star wars"
-      ]
-    }
+                { 
+                  id: '123232-33435-232',
+                "name": "John", 
+                  "FavoriteMovies": [
+                    "Star wars"
+                  ]
+                }
               </code>
             </pre>
           </td>
         </tr>
         <tr>
-          <td>Update user name</td>
-          <td>/users/[id]</td>
+          <td>Update user by name</td>
+          <td>/users/name/[:name]</td>
           <td>PUT</td>
-          <td>:id</td>
-          <td>new user name as json. Example:
+          <td>:name</td>
+          <td>updated user details as json. Example:
             <pre>
               <code>
-    { 
-      "name": "Kingkong"
-    }
+{ 
+"name": "Kingkong"
+}
               </code>
             </pre>
           </td>
           <td>updated user details in json. Example:
             <pre>
               <code>
-    { 
-      id: '1',
-      name: 'Kingkong', 
-      favMovies: [
-        "The Shining"
-      ] 
-    }
+{ 
+  id: '1',
+  name: 'Kingkong', 
+  FavoriteMovies: [
+    "uyuyuiui56678ff5"
+  ] 
+}
               </code>
             </pre>
           </td>
@@ -189,41 +207,41 @@
         </tr>
         <tr>
           <td>Show user by name</td>
-          <td>/users/[name]</td>
+          <td>/users/[:name]</td>
           <td>GET</td>
           <td>:name</td>
           <td>None</td>
-          <td>show deails of a single user by name</td>
+          <td>show details of a single user by name</td>
         </tr>
         <tr>
           <td>Show user by id</td>
-          <td>/users/[id]</td>
+          <td>/users/[:id]</td>
           <td>GET</td>
           <td>:id</td>
           <td>None</td>
-          <td>show deails of a single user by id</td>
+          <td>show details of a single user by id</td>
         </tr>
         <tr>
           <td>Add a movie to a user's list of favorites</td>
-          <td>/users/[id]/[movie]</td>
-          <td>POST</td>
-          <td>:id, :movie</td>
+          <td>/users/[:name]/[:movieID]</td>
+          <td>PATCH</td>
+          <td>:name, :movieID</td>
           <td>None</td>
           <td>user details with the movie added</td>
         </tr>
         <tr>
           <td>Remove a movie from a user's list of favorites</td>
-          <td>/users/[id]/[movie]</td>
+          <td>/users/[:name]/[:movieID]</td>
           <td>DELETE</td>
-          <td>:id, :movie</td>
+          <td>:name, :movieID</td>
           <td>None</td>
           <td>user details with the movie removed</td>
         </tr>
         <tr>
-          <td>Remove a user</td>
-          <td>/users/[id]</td>
+          <td>Remove a user by name</td>
+          <td>/users/name/[:name]</td>
           <td>DELETE</td>
-          <td>:id</td>
+          <td>:name</td>
           <td>None</td>
           <td>a message confirming the user was deleted</td>
         </tr>
