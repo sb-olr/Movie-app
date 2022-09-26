@@ -67,7 +67,8 @@ app.use(morgan('combined', {stream: accessLogStream}));
 });
 
 //GET movie by name
-app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/movies/:Title', (req, res) => {
+// app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req, res) => {
   const { Title } = req.params;
   Movies.findOne({ Title })
     .then(movie => {
